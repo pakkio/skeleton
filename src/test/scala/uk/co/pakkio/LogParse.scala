@@ -10,12 +10,12 @@ import scala.util.parsing.combinator.RegexParsers
 case class Rec(date:String, time:String, thread: String, level: String, rest: String)
 
 trait Parser extends RegexParsers {
-  val date = "\\d{4}-\\d{2}-\\d{2}"
-  val time = "\\d{2}:\\d{2}:\\d{2},\\d{3}"
-  val thread = "\\[.*\\]"
-  val level = "\\w+"
-  val rest = ".*"
-  def log: Parser[Rec]    = date.r  ~ time.r ~ thread.r ~ level.r ~ rest.r ^^ {
+  val date = "\\d{4}-\\d{2}-\\d{2}".r
+  val time = "\\d{2}:\\d{2}:\\d{2},\\d{3}".r
+  val thread = "\\[.*\\]".r
+  val level = "\\w+".r
+  val rest = ".*".r
+  def log: Parser[Rec]    = date  ~ time ~ thread ~ level ~ rest ^^ {
     case d ~ t ~ thr ~ l ~ r =>
 
       Rec(d,t,thr,l,r)
