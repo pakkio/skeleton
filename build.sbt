@@ -9,7 +9,8 @@ scalaVersion := "2.11.7"
 //Define dependencies. These ones are only required for Test and Integration Test scopes.
 libraryDependencies ++= Seq(
     "org.scalatest"   %% "scalatest"    % "2.2.4"   % "test,it",
-    "org.scalacheck"  %% "scalacheck"   % "1.12.5"      % "test,it"
+    "org.scalacheck"  %% "scalacheck"   % "1.12.5"      % "test,it",
+    "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4"
 )
 
 // For Settings/Task reference, see http://www.scala-sbt.org/release/sxr/sbt/Keys.scala.html
