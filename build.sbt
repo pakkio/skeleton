@@ -10,7 +10,9 @@ scalaVersion := "2.11.7"
 libraryDependencies ++= Seq(
     "org.scalatest"   %% "scalatest"    % "2.2.4"   % "test,it",
     "org.scalacheck"  %% "scalacheck"   % "1.12.5"      % "test,it",
-    "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4"
+    "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4",
+    "joda-time" % "joda-time" % "2.9.3"
+
 )
 
 // For Settings/Task reference, see http://www.scala-sbt.org/release/sxr/sbt/Keys.scala.html
