@@ -20,9 +20,11 @@ libraryDependencies ++= Seq(
     "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4",
     "joda-time" % "joda-time" % "2.9.3",
     "org.scala-saddle" %% "saddle-core" % "1.3.+", //this to have date comparators
-    "commons-net" % "commons-net" % "3.4"
+    "commons-net" % "commons-net" % "3.4",
+    "com.typesafe.akka" %% "akka-actor" % "2.4.3"
 
-    //"com.github.owainlewis" % "scala-ftp" % "master-SNAPSHOT" //this to get ftp
+
+    //"com.github.owainlewis" % "scala-uk.co.pakkio.ftp" % "master-SNAPSHOT" //this to get uk.co.pakkio.ftp
 
 
 

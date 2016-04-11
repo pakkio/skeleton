@@ -6,6 +6,8 @@ import java.nio.file.{Files, Paths}
 import java.util.concurrent.atomic.AtomicInteger
 
 import org.scalatest.FunSuite
+import ftp.FTPDownload
+import util.{CodecCleanerUtils, Gunzip}
 
 
 class LogParser extends FunSuite
