@@ -6,7 +6,7 @@ import java.util.zip.GZIPInputStream
 object Gunzip {
   private val buf = new Array[Byte](1024)
 
-
+  // see https://gist.github.com/sasaki-shigeo/8431252
   def gunzip(path: String) {
     val src = new File(path ++ ".gz")
     val dst = new File(path)
