@@ -1,23 +1,31 @@
 package uk.co.pakkio.spark
 
 /* SimpleApp.scala */
+
 import org.apache.spark.SparkContext
 import org.apache.spark.SparkContext._
 import org.apache.spark.SparkConf
-import org.scalatest.FunSuite
+import org.scalatest.{FunSuite, FunSuiteLike}
+import uk.co.pakkio.{NasaFile, MyParser}
 
-class DemoEmbedded extends FunSuite {
+class DemoEmbedded
+  extends MyParser
+  with Serializable
+  with FunSuiteLike
+  with NasaFile {
 
-  val logFile = "NASA_access_log_Aug95" // Should be some file on your system
+  loadNasaFile
+
   lazy val conf = new SparkConf()
-      .setAppName("Your Application Name")
-      .setMaster("local");
+    .setAppName("Your Application Name")
+    .setMaster("local");
   lazy val sc = new SparkContext(conf)
-  lazy val logData = sc.textFile(logFile, 2).cache()
+  lazy val logData = sc.textFile(fname, 8).cache()
   test("setup spark") {
     //import org.apache.log4j.PropertyConfigurator
 
     //PropertyConfigurator.configure("./log4j.properties")
+    //LogParser
     conf
     sc
     sc.setLogLevel("WARN")
@@ -26,16 +34,20 @@ class DemoEmbedded extends FunSuite {
   test("load file as rrd") {
     logData
   }
-  test("simple") {
+  test("parseLog") {
 
-    val counts = logData.flatMap(line => line.split(" "))
-        .count()
-      /*
-      .map(word => (word, 1))
-      .reduceByKey( (a, b) => a + b)*/
 
-    println(s"num of words: $counts")
-    assert(counts === 15700035)
+
+    val func = (x:String) => parse(log,x)
+    val parsed = logData.map(line => line.length)
+
+
+    /*
+    .map(word => (word, 1))
+    .reduceByKey( (a, b) => a + b)*/
+    val count = parsed.count
+    println(s"num of parsed: ${count}")
+    assert(count === 15700035)
 
     //val numAs = logData.filter(line => line.contains("a")).count()
     //val numBs = logData.filter(line => line.contains("b")).count()

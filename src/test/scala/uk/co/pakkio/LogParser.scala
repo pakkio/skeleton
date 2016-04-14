@@ -1,21 +1,20 @@
 package uk.co.pakkio
 
 
-import java.io.FileInputStream
-import java.nio.file.{Files, Paths}
 import java.util.concurrent.atomic.AtomicInteger
 
-import org.scalatest.FunSuite
-import ftp.FTPDownload
-import util.{CodecCleanerUtils, Gunzip}
+import org.scalatest.{FunSuite, FunSuiteLike}
+import uk.co.pakkio.util.CodecCleanerUtils
 
 
-class LogParser extends FunSuite
-  with Parser
+
+class LogParser extends MyParser
+  with FunSuiteLike
+  with NasaFile
   with CodecCleanerUtils {
 
   test("downloading file") {
-    nasaFile
+    loadNasaFile
   }
 
   test("parsing only 1 line") {
@@ -58,28 +57,12 @@ class LogParser extends FunSuite
     )
   }
 
-  lazy val nasaFile = {
-    val fname = "NASA_access_log_Aug95"
-    val fnamez = fname + ".gz"
-    if (!Files.exists(Paths.get(fname))) {
-      if (!Files.exists(Paths.get(fnamez))) {
-        util.FTPDownload.downloadFile("ita.ee.lbl.gov","traces",fnamez)
-      }
-      Gunzip.gunzip(fname)
-    }
-    new FileInputStream(fname)
-  }
-
-
-
-
-
   lazy val map = callers.map(s => s._2.length).toParArray
 
   lazy val callers = recs.par.groupBy(_.caller)
 
   lazy val recs = {
-    val is = nasaFile // getClass.getResource("/access_log_Aug95").openStream()
+    val is = loadNasaFile // getClass.getResource("/access_log_Aug95").openStream()
     val chunkSize = 200000 //128 * 1024
     val iterator = toSource(is).getLines().grouped(chunkSize)//.toStream.par
 
