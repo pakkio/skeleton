@@ -1,7 +1,6 @@
-package uk.co.pakkio
+package uk.co.pakkio.util
 
 import java.io._
-import java.nio.file.{Files, Paths}
 import java.util.zip.GZIPInputStream
 object Gunzip {
   private val buf = new Array[Byte](1024)

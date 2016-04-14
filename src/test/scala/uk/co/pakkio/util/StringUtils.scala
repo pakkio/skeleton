@@ -1,12 +1,11 @@
-package uk.co.pakkio
+package uk.co.pakkio.util
 
 import java.io.InputStream
+import scala.util.control.Exception._
 
 trait StringUtils {
 
   implicit class StringImprovements(val s: String) {
-
-    import scala.util.control.Exception._
 
     def toIntOpt = catching(classOf[NumberFormatException]) opt s.toInt
   }

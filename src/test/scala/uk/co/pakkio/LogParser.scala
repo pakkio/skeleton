@@ -63,7 +63,7 @@ class LogParser extends FunSuite
     val fnamez = fname + ".gz"
     if (!Files.exists(Paths.get(fname))) {
       if (!Files.exists(Paths.get(fnamez))) {
-        FTPDownload.downloadFile("ita.ee.lbl.gov","traces",fnamez)
+        util.FTPDownload.downloadFile("ita.ee.lbl.gov","traces",fnamez)
       }
       Gunzip.gunzip(fname)
     }

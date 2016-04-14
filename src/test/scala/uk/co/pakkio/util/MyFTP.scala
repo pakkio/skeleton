@@ -1,11 +1,12 @@
-package uk.co.pakkio
+package uk.co.pakkio.util
 
-import org.apache.commons.net.ftp._
-import scala.util.Try
-import scala.io.Source.fromInputStream
 import java.io.{File, FileOutputStream, InputStream}
 
-final class FTP(client: FTPClient) {
+import org.apache.commons.net.ftp.{FTP, FTPClient, FTPFile}
+
+import scala.util.Try
+
+final class MyFTP(client: FTPClient) {
   def login(username: String, password: String): Try[Boolean] = Try {
     client.login(username, password)
   }
@@ -62,5 +63,5 @@ final class FTP(client: FTPClient) {
   }
 
   def streamAsString(stream: InputStream): String =
-    fromInputStream(stream).mkString
+    scala.io.Source.fromInputStream(stream).mkString
 }

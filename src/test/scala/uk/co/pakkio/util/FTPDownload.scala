@@ -1,5 +1,4 @@
-package uk.co.pakkio
-
+package uk.co.pakkio.util
 
 /**
   * Created by Claudio Pacchiega on 10/04/2016.
@@ -8,7 +7,7 @@ package uk.co.pakkio
 object FTPDownload {
   def downloadFile(from: String, folder: String, file: String): Unit = {
     println(s"Downloading $file...")
-    val client: FTP = FTPClient()
+    val client: MyFTP = MyFTPClient()
 
     client.connect(from)
     client.login("anonymous", "")
