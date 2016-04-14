@@ -8,13 +8,14 @@ import uk.co.pakkio.util.CodecCleanerUtils
 
 
 
-class LogParser extends MyParser
+class LogParserSpec extends MyParser
   with FunSuiteLike
-  with NasaFile
   with CodecCleanerUtils {
 
+  lazy val nasa = Nasa.is
+
   test("downloading file") {
-    loadNasaFile
+    nasa
   }
 
   test("parsing only 1 line") {
@@ -30,12 +31,34 @@ class LogParser extends MyParser
     }
 
   }
+
+  lazy val recs = {
+    val chunkSize = 200000 //128 * 1024
+    val iterator = toSource(nasa).getLines().grouped(chunkSize)//.toStream.par
+
+    val cnt = new AtomicInteger
+
+    val recs = for {
+      lines <- iterator
+      line <- lines
+      //groups.incrementAndGet()
+      parsed = parse(log, line)
+      if parsed.successful
+    } yield
+      parsed.get
+    val ret = recs.toArray
+    ret
+  }
   test("assessing length of records") {
     assert(recs.length === 1569880)
   }
+
+  lazy val callers = recs.par.groupBy(_.caller)
   test("assessing number of callers") {
     assert(callers.size === 75059)
   }
+
+  lazy val map = callers.map(s => s._2.length).toParArray
   test("some statistics"){
     val maxNumOfCallsByASinglecaller = map.max
     val minNumOfCallsByASinglecaller = map.min
@@ -57,26 +80,7 @@ class LogParser extends MyParser
     )
   }
 
-  lazy val map = callers.map(s => s._2.length).toParArray
 
-  lazy val callers = recs.par.groupBy(_.caller)
 
-  lazy val recs = {
-    val is = loadNasaFile // getClass.getResource("/access_log_Aug95").openStream()
-    val chunkSize = 200000 //128 * 1024
-    val iterator = toSource(is).getLines().grouped(chunkSize)//.toStream.par
 
-    val cnt = new AtomicInteger
-
-    val recs = for {
-      lines <- iterator
-      line <- lines
-      //groups.incrementAndGet()
-      parsed = parse(log, line)
-      if parsed.successful
-    } yield
-      parsed.get
-    val ret = recs.toArray
-    ret
-  }
 }
