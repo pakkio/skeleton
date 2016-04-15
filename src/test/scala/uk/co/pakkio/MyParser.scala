@@ -15,7 +15,7 @@ case class Rec(caller: String, date: DateTime, request: String, code: Int, bytes
 
 
 // \\w+
-class MyParser extends Serializable with RegexParsers with StringUtils {
+trait MyParser extends Serializable with RegexParsers with StringUtils {
   val caller = "\\S+".r
   val dash = "-".r
   val date = """\[(.*)\]""".r

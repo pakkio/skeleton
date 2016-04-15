@@ -5,23 +5,22 @@ import java.nio.file.{Files, Paths}
 
 import uk.co.pakkio.util.Gunzip
 
-trait NasaFile {
-
-  val fname = "NASA_access_log_Aug95"
-  private val webSite = "ita.ee.lbl.gov"
-  private val folder = "traces"
-
-  lazy val loadNasaFile = {
-
-    val fnamez = fname + ".gz"
-    if (!Files.exists(Paths.get(fname))) {
-      if (!Files.exists(Paths.get(fnamez))) {
-        util.FTPDownload.downloadFile(webSite,folder,fnamez)
-      }
-      Gunzip.gunzip(fname)
+class LoadZipped(
+                  val fname: String,
+                  val webSite: String,
+                  val folder: String
+                ) {
+  val fnamez = fname + ".gz"
+  if (!Files.exists(Paths.get(fname))) {
+    if (!Files.exists(Paths.get(fnamez))) {
+      util.FTPDownload.downloadFile(webSite, folder, fnamez)
     }
-    new FileInputStream(fname)
+    Gunzip.gunzip(fname)
   }
 
-
+  def is = new FileInputStream(fname)
 }
+
+object Nasa extends LoadZipped(fname = "NASA_access_log_Aug95",
+  webSite = "ita.ee.lbl.gov",
+  folder = "traces")
